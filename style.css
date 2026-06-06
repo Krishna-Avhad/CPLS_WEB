@@ -174,7 +174,7 @@ nav.scrolled{padding:9px 5%;background:rgba(255,255,255,0.97);box-shadow:0 4px 2
 #testimonials{background:white;}
 .testimonials-wrap{position:relative;overflow:hidden;margin-top:48px;}
 .testimonials-track{display:flex;gap:22px;transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);}
-.testi-card{min-width:320px;max-width:320px;background:var(--cream);border-radius:var(--radius);padding:28px;box-shadow:0 7px 28px rgba(0,0,0,0.07);flex-shrink:0;border:2px solid var(--yellow-light);}
+.testi-card{width:calc(33.333% - 15px);background:var(--cream);border-radius:var(--radius);padding:28px;box-shadow:0 7px 28px rgba(0,0,0,0.07);flex-shrink:0;border:2px solid var(--yellow-light);}
 .testi-stars{color:var(--orange);font-size:1.05rem;margin-bottom:0.9rem;}
 .testi-text{font-size:0.93rem;color:var(--text-mid);line-height:1.8;margin-bottom:1.3rem;font-style:italic;}
 .testi-author{display:flex;align-items:center;gap:11px;}
@@ -806,16 +806,30 @@ footer::before{content:'';position:absolute;top:-2px;left:0;right:0;height:75px;
   .award-badge{top:10px;left:10px;}
   .act-grid{grid-template-columns:repeat(3,1fr);grid-template-rows:auto;}
   .act-item{grid-column:auto!important;grid-row:auto!important;height:130px;}
-  .gallery-grid{columns:3;}
+  .school-gallery{grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));}
   .footer-grid{grid-template-columns:1fr 1fr;}
+  .testi-card{width:calc(50% - 11px);}
 }
 @media(max-width:768px){
   .nav-links,.nav-cta{display:none;}
   .nav-hamburger{display:flex;}
+  
+  #hero{padding:100px 5% 50px; text-align:center;}
+  .hero-badge{margin-left:auto; margin-right:auto;}
+  .hero-btns{flex-direction:column; align-items:stretch; gap:10px;}
+  .btn-primary, .btn-secondary{justify-content:center;}
+  
+  #about{text-align:center;}
+  .section-sub{margin-left:auto; margin-right:auto;}
   .about-features{grid-template-columns:1fr;}
+  .about-visual{min-height:auto; margin-bottom:24px;}
+  .about-main-card{height:260px; font-size:4.5rem;}
+  
   .programs-grid{grid-template-columns:1fr 1fr;}
   .act-grid{grid-template-columns:repeat(2,1fr);}
-  .gallery-grid{columns:2;}
+  .school-gallery{grid-template-columns:1fr 1fr;}
+  .testi-card{width:100%;}
+  
   .admission-inner{padding:28px 20px;}
   .adm-form{grid-template-columns:1fr;}
   .adm-form .full{grid-column:1;}
@@ -824,7 +838,6 @@ footer::before{content:'';position:absolute;top:-2px;left:0;right:0;height:75px;
   .footer-grid{grid-template-columns:1fr;}
   .footer-bottom{flex-direction:column;text-align:center;}
   .lightbox-imgs{grid-template-columns:1fr 1fr;}
-  .hero-btns{flex-direction:column;align-items:flex-start;}
   
   /* Milestone Overrides */
   .milestone-grid{grid-template-columns:1fr;}
@@ -839,13 +852,17 @@ footer::before{content:'';position:absolute;top:-2px;left:0;right:0;height:75px;
   .sorter-buckets{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:480px){
-  .gallery-grid{columns:1;}
+  .nav-logo{font-size:1.15rem; gap:6px;}
+  .nav-logo-icon{width:42px; height:42px;}
+  
+  .school-gallery{grid-template-columns:1fr;}
   .programs-grid{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:1fr 1fr;}
   .act-grid{grid-template-columns:1fr 1fr;}
   .adm-contacts{flex-direction:column;align-items:stretch;}
   .adm-contact-btn{justify-content:center;}
   .about-features{grid-template-columns:1fr;}
+  .testi-card{width:100%;}
   
   /* Kids Play Zone Overrides */
   .memory-grid{grid-template-columns:repeat(4,1fr);max-width:280px;gap:6px;}
