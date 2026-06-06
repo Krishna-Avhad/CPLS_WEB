@@ -795,6 +795,81 @@ footer::before{content:'';position:absolute;top:-2px;left:0;right:0;height:75px;
 .bucket.color-yellow { border-color: var(--yellow); }
 .bucket.color-green { border-color: var(--green-dark); }
 
+/* =============================================
+   PRINCIPAL'S DESK
+   ============================================= */
+.principal-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 56px;
+  align-items: center;
+  margin-top: 48px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.principal-visual {
+  display: flex;
+  justify-content: center;
+}
+.principal-img-card {
+  width: 260px;
+  height: 320px;
+  background: linear-gradient(135deg, var(--yellow-light), var(--peach));
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 15px 45px rgba(255, 140, 66, 0.15);
+  border: 3px solid var(--yellow);
+  overflow: hidden;
+}
+.p-avatar {
+  font-size: 6rem;
+  animation: floatUp 4s ease-in-out infinite;
+}
+.p-badge {
+  position: absolute;
+  bottom: 20px;
+  background: var(--orange);
+  color: white;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 10px rgba(255,140,66,0.3);
+}
+.principal-text h3 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.6rem;
+  color: var(--orange);
+  margin-bottom: 18px;
+  line-height: 1.3;
+}
+.principal-text p {
+  font-size: 0.98rem;
+  color: var(--text-mid);
+  line-height: 1.85;
+  margin-bottom: 14px;
+}
+.principal-signature {
+  margin-top: 24px;
+  border-top: 2px dashed var(--yellow-light);
+  padding-top: 16px;
+}
+.principal-signature h4 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  font-weight: 800;
+}
+.principal-signature p {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0;
+}
 
 /* RESPONSIVE */
 @media(max-width:1024px){
@@ -850,6 +925,16 @@ footer::before{content:'';position:absolute;top:-2px;left:0;right:0;height:75px;
   .memory-grid{grid-template-columns:repeat(4,1fr);max-width:320px;gap:8px;}
   .card-front, .card-back{font-size:1.8rem;}
   .sorter-buckets{grid-template-columns:1fr 1fr;}
+  
+  /* Principal Overrides */
+  .principal-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+  .principal-signature {
+    text-align: center;
+  }
 }
 @media(max-width:480px){
   .nav-logo{font-size:1.15rem; gap:6px;}
