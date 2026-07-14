@@ -888,7 +888,7 @@ async function fetchBirthdays() {
     const currentMonth = today.getMonth() + 1; // getMonth() is 0-indexed
     const currentDay = today.getDate();
 
-    if (error || !students) {
+    if (error || !students || students.length === 0) {
       console.warn('Supabase students table not found or error occurred. Showing dummy data to preview feature.');
       // Dummy data for today
       birthdayStudents = [
