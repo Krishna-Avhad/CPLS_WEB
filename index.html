@@ -626,22 +626,20 @@
       <div class="adm-step"><div class="adm-step-num">3</div><p>Submit Documents</p></div>
       <div class="adm-step"><div class="adm-step-num">4</div><p>Welcome to CPLS! 🎉</p></div>
     </div>
-    <form class="adm-form" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="d3becfe8-3dc3-4fc6-9daf-d365a2213f2b">
-      <input type="hidden" name="subject" value="New Admission Enquiry - Chavan Podar Jumbo Kids">
+    <form class="adm-form" id="enquiryForm">
       <input id="admParent" type="text" name="parent_name" placeholder="Parent's Full Name *" required>
-      <input type="tel" name="mobile" placeholder="Mobile Number *" required>
-      <input type="text" name="child_name" placeholder="Child's Name *" required>
-      <select name="program" required>
+      <input id="admMobile" type="tel" name="mobile" placeholder="Mobile Number *" required>
+      <input id="admChild" type="text" name="child_name" placeholder="Child's Name *" required>
+      <select id="admProgram" name="program" required>
         <option value="">Program Interested In *</option>
         <option>Play Group (Age 2–3)</option>
         <option>Nursery (Age 3–4)</option>
         <option>Jr. KG (Age 4–5)</option>
         <option>Sr. KG (Age 5–6)</option>
       </select>
-      <input type="email" name="email" placeholder="Email Address" class="full">
-      <textarea rows="3" class="full" name="message" placeholder="Any questions or message for us? 😊" style="resize:vertical;"></textarea>
-      <button type="submit" class="adm-form-btn">🎒 Submit Enquiry & Get a Call Back</button>
+      <input id="admEmail" type="email" name="email" placeholder="Email Address" class="full">
+      <textarea id="admMessage" rows="3" class="full" name="message" placeholder="Any questions or message for us? 😊" style="resize:vertical;"></textarea>
+      <button type="submit" class="adm-form-btn" id="enquirySubmitBtn">🎒 Submit Enquiry & Get a Call Back</button>
     </form>
     <div class="adm-contacts">
       <a href="https://wa.me/919130689347" class="adm-contact-btn adm-wa" target="_blank" rel="noopener noreferrer">💬 WhatsApp Us</a>
@@ -710,6 +708,8 @@
 </div>
 
 <!-- EXTERNAL JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

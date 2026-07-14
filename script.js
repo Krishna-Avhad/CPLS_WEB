@@ -774,3 +774,98 @@ function filterGallery(category) {
     }
   });
 }
+
+// =============================================
+// SUPABASE FORM SUBMISSION
+// =============================================
+let mainSupabaseClient = null;
+
+function initMainSupabase() {
+  const isConfigured = 
+    typeof SUPABASE_URL !== 'undefined' && 
+    typeof SUPABASE_ANON_KEY !== 'undefined' &&
+    SUPABASE_URL && 
+    SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' && 
+    SUPABASE_ANON_KEY && 
+    SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
+
+  if (isConfigured) {
+    try {
+      mainSupabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (err) {
+      console.error("Failed to initialize main page Supabase client:", err);
+    }
+  }
+}
+
+// Initialize Supabase client and listener immediately
+initMainSupabase();
+const form = document.getElementById('enquiryForm');
+if (form) {
+  form.addEventListener('submit', handleEnquirySubmit);
+}
+
+async function handleEnquirySubmit(event) {
+  event.preventDefault();
+  
+  const submitBtn = document.getElementById('enquirySubmitBtn');
+  const parentName = document.getElementById('admParent').value;
+  const mobile = document.getElementById('admMobile').value;
+  const childName = document.getElementById('admChild').value;
+  const program = document.getElementById('admProgram').value;
+  const email = document.getElementById('admEmail').value;
+  const message = document.getElementById('admMessage').value;
+
+  if (!mainSupabaseClient) {
+    alert("Supabase is not configured yet! Please edit config.js with your project credentials.");
+    return;
+  }
+
+  // Set loading state
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = '🎒 Submitting Enquiry...';
+  }
+
+  try {
+    const { error } = await mainSupabaseClient
+      .from('enquiries')
+      .insert([
+        {
+          parent_name: parentName,
+          mobile: mobile,
+          child_name: childName,
+          program: program,
+          email: email || null,
+          message: message || null,
+          status: 'pending'
+        }
+      ]);
+
+    if (error) throw error;
+
+    // Reset Form
+    event.target.reset();
+
+    // Show Success Modal
+    const modal = document.getElementById('successModal');
+    if (modal) {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Play Sound & Confetti
+    playSound('win');
+    triggerConfetti();
+
+  } catch (err) {
+    console.error("Error submitting to Supabase:", err);
+    alert("Sorry! There was an issue submitting your enquiry: " + err.message);
+  } finally {
+    // Restore button
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🎒 Submit Enquiry & Get a Call Back';
+    }
+  }
+}

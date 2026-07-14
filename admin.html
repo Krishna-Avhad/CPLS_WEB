@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard – Chavan-Podar Jumbo Kids, Vaijapur</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- ADMIN LOADER -->
+  <div id="admin-loader">
+    <div class="loader-spinner"></div>
+    <p>Loading enquiries...</p>
+  </div>
+
+  <div class="dashboard-container">
+    <!-- HEADER -->
+    <header class="db-header">
+      <div class="header-logo">
+        <div class="logo-box">🐘</div>
+        <div>
+          <h1>Chavan-Podar Jumbo Kids</h1>
+          <p class="subtitle">Admissions Enquiry Portal (Vaijapur)</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-refresh" class="btn-action btn-refresh" onclick="fetchEnquiries()">🔄 Refresh Data</button>
+        <button id="btn-export" class="btn-action btn-export" onclick="exportToCSV()">📥 Export CSV</button>
+        <a href="index.html" class="btn-action btn-back">🏫 Back to Website</a>
+      </div>
+    </header>
+
+    <!-- METRICS CARDS -->
+    <section class="metrics-grid">
+      <div class="metric-card card-total">
+        <div class="metric-icon">📁</div>
+        <div class="metric-info">
+          <span class="metric-label">Total Enquiries</span>
+          <h3 id="stat-total">0</h3>
+        </div>
+      </div>
+      <div class="metric-card card-pending">
+        <div class="metric-icon">⏳</div>
+        <div class="metric-info">
+          <span class="metric-label">Pending Review</span>
+          <h3 id="stat-pending">0</h3>
+        </div>
+      </div>
+      <div class="metric-card card-actioned">
+        <div class="metric-icon">📞</div>
+        <div class="metric-info">
+          <span class="metric-label">Called / Contacted</span>
+          <h3 id="stat-called">0</h3>
+        </div>
+      </div>
+      <div class="metric-card card-admitted">
+        <div class="metric-icon">🎉</div>
+        <div class="metric-info">
+          <span class="metric-label">Admitted</span>
+          <h3 id="stat-admitted">0</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN BODY -->
+    <main class="db-main">
+      <!-- FILTERS PANEL -->
+      <aside class="filters-panel">
+        <h3>🔍 Filter Enquiries</h3>
+        <div class="filter-group">
+          <label for="search-input">Search Parent / Child / Mobile</label>
+          <input type="text" id="search-input" placeholder="Type to search..." oninput="filterData()">
+        </div>
+        <div class="filter-group">
+          <label for="filter-program">Interested Program</label>
+          <select id="filter-program" onchange="filterData()">
+            <option value="all">All Programs</option>
+            <option value="Play Group">Play Group (Age 2–3)</option>
+            <option value="Nursery">Nursery (Age 3–4)</option>
+            <option value="Jr. KG">Jr. KG (Age 4–5)</option>
+            <option value="Sr. KG">Sr. KG (Age 5–6)</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-status">Enquiry Status</label>
+          <select id="filter-status" onchange="filterData()">
+            <option value="all">All Statuses</option>
+            <option value="pending">⏳ Pending</option>
+            <option value="called">📞 Called / Contacted</option>
+            <option value="visited">🏫 Campus Visited</option>
+            <option value="admitted">🎉 Admitted</option>
+            <option value="rejected">❌ Rejected / Not Interested</option>
+          </select>
+        </div>
+        <div class="config-warning" id="config-status-warning" style="display: none;">
+          ⚠️ <strong>Setup Required</strong>: Please configure your credentials in <code>config.js</code> to link Supabase.
+        </div>
+      </aside>
+
+      <!-- ENQUIRIES LIST / TABLE -->
+      <section class="list-panel">
+        <div class="table-container">
+          <table class="enquiries-table">
+            <thead>
+              <tr>
+                <th>Date Submitted</th>
+                <th>Parent Name</th>
+                <th>Child Name</th>
+                <th>Program</th>
+                <th>Mobile Number</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="enquiries-list">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+        <div id="no-results" class="no-results" style="display: none;">
+          <div>📭</div>
+          <p>No enquiries found matching those filters.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- DETAIL & ACTION MODAL -->
+  <div class="modal-overlay" id="detailModal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-header">
+        <h2>Admissions Enquiry Details</h2>
+        <span class="submit-time" id="modal-date">Submitted on 2026-07-14</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="label">Parent's Name</span>
+            <strong id="modal-parent">Priya Sharma</strong>
+          </div>
+          <div class="detail-item">
+            <span class="label">Mobile Number</span>
+            <strong id="modal-mobile">9130689347</strong>
+            <a href="#" id="modal-call-link" class="action-link call-link">📞 Call Parent</a>
+          </div>
+          <div class="detail-item">
+            <span class="label">Child's Name</span>
+            <strong id="modal-child">Aaradhya Sharma</strong>
+          </div>
+          <div class="detail-item">
+            <span class="label">Program Interested</span>
+            <span class="program-badge" id="modal-program">Nursery</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="label">Email Address</span>
+            <span id="modal-email">priya@example.com</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="label">Parent Message / Questions</span>
+            <blockquote id="modal-message">Looking for full-time class timings.</blockquote>
+          </div>
+        </div>
+
+        <hr class="modal-divider">
+
+        <div class="admin-actions-section">
+          <div class="action-group">
+            <label for="modal-status">Change Enquiry Status</label>
+            <div class="status-selector-pills">
+              <button class="pill-btn status-pending" onclick="updateStatus('pending')">Pending</button>
+              <button class="pill-btn status-called" onclick="updateStatus('called')">Called</button>
+              <button class="pill-btn status-visited" onclick="updateStatus('visited')">Visited</button>
+              <button class="pill-btn status-admitted" onclick="updateStatus('admitted')">Admitted</button>
+              <button class="pill-btn status-rejected" onclick="updateStatus('rejected')">Rejected</button>
+            </div>
+          </div>
+
+          <div class="action-group">
+            <label for="modal-notes">Internal Administrator Notes</label>
+            <textarea id="modal-notes" rows="4" placeholder="Write internal updates here (e.g. 'Called on 15th July, scheduling a visit next week')..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-delete" onclick="deleteEnquiry()">🗑️ Delete Enquiry</button>
+        <button class="btn-save" onclick="saveEnquiryChanges()">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase & Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
